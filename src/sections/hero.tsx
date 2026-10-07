@@ -1,0 +1,8 @@
+"use client";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { Network } from "@/components/network";
+import { ProjectButton } from "@/components/ui";
+
+export function Hero() {
+  return <section className="hero" id="top"><div className="hero-grid-bg"/><div className="hero-topline"><span className="eyebrow">INDEPENDENT SPECIALIST / AI AUTOMATION</span><span className="availability"><i/>AVAILABLE FOR PROJECTS</span></div><div className="hero-main"><div className="hero-copy"><div className="hero-kicker"><span/>HUMAN AMBITION. MACHINE PRECISION.</div><h1>I BUILD SYSTEMS<br/>THAT THINK,<br/><span className="hero-last">ACT <span className="amp">&</span> <em>AUTOMATE.</em></span></h1><p>AI automation and intelligent agents designed to eliminate repetitive operations, capture opportunities and keep businesses running 24/7.</p><div className="hero-actions"><a href="#systems" className="button button-primary" data-magnetic>Explore my systems<ArrowUpRight size={18}/></a><ProjectButton className="button-text"/></div></div><div className="hero-visual"><div className="visual-caption"><span className="tiny-cross">+</span> AUTOMATION INTELLIGENCE / V.01</div><Network/><div className="network-status"><span className="status-dot"/>SYSTEM CONNECTED<span className="network-status-line"/>READY TO EXECUTE</div></div></div><div className="hero-bottom"><a className="scroll-prompt" href="#problem"><span className="scroll-icon"><ArrowDown size={15}/></span>SCROLL TO ENTER SYSTEM</a><span className="hero-specialties">AI AGENTS <b>/</b> VOICE AI <b>/</b> AUTOMATION <b>/</b> CRM</span><span className="hero-location">ISLAMABAD, PK <span>↗</span></span></div></section>;
+}

@@ -1,0 +1,9 @@
+"use client";
+import { ArrowUp, ArrowUpRight } from "lucide-react";
+import { Network } from "@/components/network";
+import { ProjectButton, SectionLabel } from "@/components/ui";
+import { profile } from "@/lib/content";
+
+export function Contact() {
+  return <><section className="section contact-section" id="contact"><SectionLabel index="09">YOUR NEXT CHAPTER</SectionLabel><div className="contact-network" aria-hidden="true"><Network compact/></div><div className="contact-content"><span className="eyebrow">YOUR NEXT EMPLOYEE MIGHT NOT BE HUMAN.</span><h2 data-reveal>LET’S BUILD<br/>YOUR <span className="cyan">AI SYSTEM.</span></h2><p>If your business is losing time to repetitive processes, manual follow-ups, missed leads or disconnected tools, let’s design a system that handles them automatically.</p><div className="contact-actions"><ProjectButton className="button-primary"/><a className="button button-text" href={`mailto:${profile.email}`}>Email me<ArrowUpRight size={16}/></a></div><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email}<ArrowUpRight size={19}/></a></div></section><footer className="footer"><div className="footer-top"><div><a href="#top" className="wordmark">FAIQ<span>.</span></a><p>MUHAMMAD FAIQ KHAN<br/>AI AUTOMATION & AI AGENTS</p></div><div className="footer-location"><span>BASED IN ISLAMABAD / PAKISTAN</span><a href={`tel:${profile.phone}`}>+92 319 9463735</a></div><div className="footer-socials"><span>SOCIAL PROFILES / COMING SOON</span><div><span>LinkedIn</span><span>GitHub</span><span>Instagram</span></div></div><a className="back-top" href="#top" aria-label="Back to top"><ArrowUp size={20}/></a></div><div className="footer-bottom"><span>© {new Date().getFullYear()} MUHAMMAD FAIQ KHAN</span><span>DESIGNED AROUND SYSTEMS. BUILT AROUND AUTOMATION.</span><span className="footer-system"><span className="status-dot"/>END OF SEQUENCE</span></div></footer></>;
+}
