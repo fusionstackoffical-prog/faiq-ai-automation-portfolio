@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/space-grotesk";
+import "@fontsource-variable/cormorant-garamond";
+import "@fontsource-variable/cormorant-garamond/wght-italic.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "./globals.css";
 
@@ -14,7 +16,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
   robots: { index: true, follow: true },
 };
-export const viewport: Viewport = { themeColor: "#080a0c" };
+export const viewport: Viewport = { themeColor: "#050505" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en"><body><a href="#main" className="skip-link">Skip to content</a>{children}</body></html>;

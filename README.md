@@ -1,52 +1,44 @@
 # FAIQ. — AI Automation & AI Agents
 
-A custom portfolio for Muhammad Faiq Khan, built with Next.js App Router, React, TypeScript, Tailwind CSS, GSAP and Lucide icons. All fonts are self-hosted. The supplied portrait is used without alteration.
+Existing Next.js App Router portfolio for Muhammad Faiq Khan. Uses React, TypeScript, GSAP and Lucide. The supplied portrait is preserved.
 
-## Local development
+## Development
 
-Requires Node.js 20.9 or newer.
+Node.js 20.9+ is required. Run `npm install`, then `npm run dev`. The dev server binds to 127.0.0.1:3000. If an instance is already running, reuse it.
 
-```sh
-npm install
-npm run dev
-```
+## Validation
 
-Open http://localhost:3000. If that port is occupied, Next.js will report another port.
+- `npm run lint`
+- `npm run typecheck`
+- `npm run build`
+- `npm run start`
 
-## Checks and production
+## Design and content
 
-```sh
-npm run lint
-npm run typecheck
-npm run build
-npm run start
-```
+The visual system uses layered near-black (#050505, #090909), graphite surfaces (#0D0D0D, #111111, #171717), soft-white typography (#F5F5F2) and restrained silver illumination. Self-hosted Cormorant Garamond supplies the editorial display type; Space Grotesk and IBM Plex Mono serve body copy and technical labels.
 
-## Content and components
+- `src/app/page.tsx`: section composition, with About immediately after Hero.
+- `src/app/globals.css`: responsive design system and reduced-motion styles.
+- `src/lib/content.ts`: identity, contact destinations, services and journey copy.
+- `src/lib/architecture.ts`: 33 nodes, 38 connections and the demonstration signal route.
+- `src/components/architecture.tsx`: keyboard/touch explorable HVAC map with zoom, pause and node descriptions.
+- `src/components/technology-map.tsx`: responsive connector geometry measured from the tool nodes.
+- `src/components/service-diagram.tsx`: changing service preview.
+- `src/sections/voice.tsx`: customer request-to-action walkthrough; the former call transcript is removed.
+- `src/sections/featured.tsx`: real-system architecture case study; the former fake booking simulation is removed.
+- `src/sections/engine.tsx`: unpinned, scroll-linked customer data journey with manual node selection.
+- `src/animations/motion.tsx`: restrained GSAP reveals and hero parallax.
 
-- `src/lib/content.ts`: profile, workflow and service copy.
-- `src/sections/`: page sections and interactive demonstrations.
-- `src/components/`: shared network visual, navigation, enquiry dialog and UI.
-- `src/animations/motion.tsx`: GSAP scroll effects and pointer interactions.
-- `src/app/globals.css`: responsive design system, layout and CSS motion.
-- `public/images/faiq-portrait.jpg`: supplied professional portrait.
+## Contact and integrations
 
-## What is connected
+Primary project CTAs, Let's Talk, the contact icon and the phone link open WhatsApp for +92 319 9463735 with a short prefilled project enquiry. LinkedIn and Instagram use the supplied profile URLs. External profile/contact links use a new tab with `noopener noreferrer`. Email links remain available.
 
-Project enquiry prepares a `mailto:` draft in the visitor's email app. Direct email and phone links work without a backend. No email is sent by the website, and no enquiry information is stored. A mail app must be configured on the visitor's device; the email address can also be copied.
+The architecture is a stylized, interactive interpretation of the supplied real n8n canvas and written project information. It is not a live n8n connection, exact workflow export or claim of measured client results. No booking is made, customer record updated or message sent by the visualization. The reference screenshot is not embedded in the website.
 
-The HVAC booking engine and voice conversation are explicitly labeled frontend simulations using fictional sample data. They do not connect to an AI API, process customer data, create bookings or send messages. The voice example is a visual transcript with no audio. Both success and scheduling-conflict paths are available in the HVAC demo.
+## Accessibility and motion
 
-Social profile names are noninteractive placeholders until real URLs are provided. No client results, testimonials or performance figures are fabricated.
+All interactions have visible keyboard focus. Service and request tabs support arrow keys, Home and End. Architecture nodes expose descriptive accessible names and respond to focus, hover or tap; Escape dismisses node inspection. Narrow layouts give the canvas its own horizontal scroll area so nodes remain legible. The customer journey stacks vertically on smaller screens, without scroll pinning. Reduced-motion preferences disable decorative animation and automatic journey progression. The architecture also has a pause control and only advances its signal while in view.
 
-## Motion and accessibility
+## Deployment
 
-Desktop includes pinned GSAP workflow and philosophy sequences. Mobile uses normal document flow. Reduced-motion users receive all content without pinning, packet animation or parallax. Controls include keyboard focus states, accessible tab navigation, a native modal dialog and live status announcements.
-
-## Deploy later on Vercel
-
-Import this folder as a Next.js project. The standard `npm run build` command is sufficient; no environment variables are required. No deployment has been created. Social image URLs use the Vercel production domain automatically. For a custom domain, set `NEXT_PUBLIC_SITE_URL` to its full HTTPS URL and add the canonical URL in `src/app/layout.tsx`. OpenGraph image and favicon are generated by Next.js metadata routes.
-
-## Dependency note
-
-TypeScript is kept on the compatible 5.9 release because the installed ESLint integration does not support TypeScript 7. The current registry audit flags the `braces` dependency chain in `eslint-config-next` (development tooling only, GHSA-vfj7-8cjw-p6xm); no compatible upstream fix is offered yet. Runtime dependencies have no reported vulnerabilities in this audit. Recheck the advisory when updating the lint tooling; do not force-downgrade the framework configuration to an incompatible major version.
+No deployment is performed. Standard Next.js hosting can use `npm run build`. Configure `NEXT_PUBLIC_SITE_URL` for a custom canonical deployment origin; Vercel production metadata is detected automatically.

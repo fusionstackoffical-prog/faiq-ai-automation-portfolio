@@ -2,6 +2,9 @@ export const profile = {
   name: "Muhammad Faiq Khan",
   email: "Faiqkhan2525@gmail.com",
   phone: "+923199463735",
+  whatsapp: "https://wa.me/923199463735?text=Hi%20Faiq%2C%20I%E2%80%99d%20like%20to%20discuss%20an%20AI%20automation%20project.",
+  linkedin: "https://www.linkedin.com/in/faiq-khan-767149382/?isSelfProfile=true",
+  instagram: "https://www.instagram.com/faiqkhan_0?stkn=OXlndmQyY3dlbjU2",
   location: "Islamabad, Pakistan",
 };
 

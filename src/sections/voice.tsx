@@ -1,18 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
-import { AudioLines, Check, Pause, Play, RotateCcw } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Check } from "lucide-react";
 import { SectionLabel } from "@/components/ui";
-
+const stages = [
+  ["Receive", "Incoming customer → AI agent", "Capture the request and understand intent before moving into your business process.", ["Customer request", "AI agent", "Understand intent"]],
+  ["Decide", "Context before action", "Qualify the enquiry, check business data and validate availability against existing commitments.", ["Qualify request", "Business data", "Check availability"]],
+  ["Act", "An operation, not just an answer", "Create or update the lead, book an appointment and synchronize the calendar.", ["Create / update lead", "Book appointment", "Sync calendar"]],
+  ["Continue", "Keep the customer informed", "Confirm the outcome, arrange reminders and connect follow-up to the customer record.", ["Confirm customer", "Reminder", "Follow-up"]],
+] as const;
 export function Voice() {
-  const [stage, setStage] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  useEffect(() => {
-    if (!playing) return;
-    const timer = setTimeout(() => {
-      if (stage >= 4) setPlaying(false);
-      else setStage(s => s + 1);
-    }, 1600);
-    return () => clearTimeout(timer);
-  }, [playing, stage]);
-  return <section className="section voice-section" id="voice"><SectionLabel index="04">AN INTELLIGENT FIRST RESPONSE</SectionLabel><div className="voice-grid"><div className="voice-copy"><span className="outline-tag">AI VOICE AGENTS</span><h2 data-reveal>Your business<br/>can answer<br/><span className="cyan">every call.</span></h2><p>AI voice agents can answer calls, understand customer needs, qualify opportunities, check availability and move customers toward booking.</p><span className="voice-footnote">A CONVERSATION THAT BECOMES AN ACTION.</span></div><div className="voice-console" data-reveal><div className="panel-topbar"><span><AudioLines size={15}/> VOICE INTERFACE</span><span className="demo-badge">VISUAL SIMULATION · NO AUDIO</span></div><div className={`waveform ${playing ? "playing" : ""}`} aria-hidden="true">{Array.from({ length: 49 }, (_, i) => <span key={i} style={{ height: `${Math.round(10 + Math.pow(Math.sin(i * 1.8), 2) * (1 - Math.abs(24 - i) / 29) * 95)}px`, animationDelay: `${(i * -.085).toFixed(3)}s` }}/>)}</div><div className="voice-controls"><span className="mono">{playing ? "PROCESSING CONVERSATION" : stage === 4 ? "CONVERSATION COMPLETE" : "READY WHEN YOU ARE"}</span><button aria-label={playing ? "Pause conversation" : stage === 4 ? "Replay conversation" : "Play conversation"} onClick={() => { if (stage === 4) { setStage(0); setPlaying(true); } else setPlaying(!playing); }}>{playing ? <Pause size={16}/> : stage === 4 ? <RotateCcw size={16}/> : <Play size={16}/>}</button></div><div className="transcript" aria-live="polite"><div className={`transcript-line ${stage >= 1 ? "spoken" : ""}`}><span>CUSTOMER</span><p>“My AC stopped cooling this morning.”</p></div><div className={`transcript-line agent-line ${stage >= 2 ? "spoken" : ""}`}><span><span className="status-dot"/> AI AGENT</span><p>“I can help with that. Let me check the next available appointment.”</p></div></div><div className="voice-data"><div><span>INTENT DETECTED</span><strong>{stage >= 2 ? "AC REPAIR" : "—"}</strong></div><div><span>LEAD</span><strong>{stage >= 3 ? "QUALIFIED" : "—"}</strong></div><div><span>AVAILABILITY</span><strong>{stage >= 4 ? "11:00 AM" : stage >= 3 ? "CHECKING" : "—"}</strong></div><div><span>BOOKING</span><strong>{stage >= 4 ? <><Check size={12}/>READY</> : "—"}</strong></div></div></div></div></section>;
+  const [active, setActive] = useState(0);
+  return <section className="section request-section" id="request"><SectionLabel index="02">FROM CUSTOMER REQUEST → BUSINESS ACTION</SectionLabel><div className="request-layout"><div><h2 data-reveal>A conversation.<br/><em>A chain of action.</em></h2><p className="section-copy">Your customer needs an answer. Your business needs the work behind it to happen. I connect the two.</p><div className="request-tabs" role="tablist" aria-label="Customer request stages">{stages.map(([title],i) => <button key={title} id={`request-tab-${i}`} role="tab" aria-selected={active===i} aria-controls="request-panel" tabIndex={active===i?0:-1} onClick={() => setActive(i)} onKeyDown={e => { let next=i; if(e.key==="ArrowRight") next=(i+1)%4; else if(e.key==="ArrowLeft") next=(i+3)%4; else if(e.key==="Home") next=0; else if(e.key==="End") next=3; else return; e.preventDefault(); setActive(next); document.getElementById(`request-tab-${next}`)?.focus(); }}><span>0{i+1}</span>{title}</button>)}</div></div><div id="request-panel" role="tabpanel" aria-labelledby={`request-tab-${active}`} className="request-operation" tabIndex={0}><span className="eyebrow">{stages[active][1]}</span><div className="request-flow" key={active}>{stages[active][3].map((label,i) => <div className="request-step" key={label} style={{animationDelay:`${i*130}ms`}}><span>{i===2?<Check size={18}/>:<ArrowRight size={18}/>}</span><h3>{label}</h3></div>)}</div><p>{stages[active][2]}</p><button className="text-link" onClick={() => setActive((active+1)%4)}>{active===3 ? "Explore from the start" : "Trace the next stage"}<ArrowRight size={17}/></button></div></div></section>;
 }
