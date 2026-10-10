@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AudioLines, CalendarDays, Database, Mail, MessageSquare, RefreshCw, Users, Workflow } from "lucide-react";
+import { HeroGalaxy } from "./hero-galaxy";
 
 const nodes = [
   { label: "VOICE AI", x: 28, y: 14, Icon: AudioLines },
@@ -15,6 +16,10 @@ const nodes = [
 ];
 
 export function Network({ compact = false }: { compact?: boolean }) {
+  return compact ? <OriginalNetwork compact/> : <HeroGalaxy/>;
+}
+
+function OriginalNetwork({ compact = false }: { compact?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [signal, setSignal] = useState<{ node: number; phase: "incoming" | "core" | "outgoing" } | null>(null);
   useEffect(() => {
