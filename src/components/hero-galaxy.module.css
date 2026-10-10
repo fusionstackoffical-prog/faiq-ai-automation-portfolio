@@ -1,159 +1,46 @@
-.galaxy {
-  container-type: inline-size;
-  isolation: isolate;
-  aspect-ratio: 1.08;
-  perspective: none;
-}
-
-/* Expand only the illustration; preserve the hero's existing layout footprint. */
-.stage {
-  position: absolute;
-  width: 124%;
-  aspect-ratio: 10 / 9;
-  left: -18%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.space, .ring {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-}
-.space { z-index: 0; }
-.stars { fill: #ddd; }
-.twinkle { animation: twinkle 19s ease-in-out infinite; }
-.orbitDrift { transform-origin: 500px 450px; animation: orbitDrift 80s linear infinite; }
-.orbitParticle {
-  fill: none;
-  stroke: #d5d5d2;
-  stroke-width: 2.1;
-  stroke-linecap: round;
-  stroke-dasharray: .035 99.965;
-  opacity: .6;
-  animation: orbitTravel 64s linear infinite;
-}
-.connection path { fill: none; stroke: #ffffff1c; stroke-width: .85; transition: stroke .7s; }
-.connection[data-active="true"] path { stroke: #ffffff62; }
-.connection .signal {
-  stroke: #dededb;
-  stroke-width: 1.9;
-  stroke-linecap: round;
-  stroke-dasharray: .1 100;
-  animation: signal 38s linear infinite;
-}
-
-/* Rear and foreground arcs share the same ellipse and straddle the sphere. */
-.rear { z-index: 1; opacity: .22; }
-.front { z-index: 3; opacity: .58; }
-.ring path { fill: none; stroke: #bdbdba; stroke-width: .85; }
-.ring path:nth-child(2) { opacity: .25; stroke-width: .55; }
-.ring .ringParticles {
-  stroke: #dededb;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-dasharray: .05 99.95;
-  animation: orbitTravel 72s linear infinite;
-}
-
-.sphere {
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  top: 50%;
-  width: 30%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 20%, #414141 0, #232323 17%, #0a0a0a 48%, #030303 69%, #111 85%, #414141 100%);
-  border: 1px solid #aaaaa66e;
-  box-shadow: -2px -2px 7px #ffffff26, 3px 4px 12px #ffffff08, 0 0 30px #ffffff0c, inset 2px 2px 8px #ffffff35, inset -5px -4px 12px #000;
-}
-.sphere::before, .sphere::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-}
-.sphere::before { inset: -7%; border: 1px solid #ffffff13; box-shadow: 0 0 25px #ffffff07; animation: breathe 8s ease-in-out infinite; }
-.sphere::after { inset: -16%; border: 1px solid #ffffff09; }
-.surface { position: absolute; inset: 5%; border-radius: 50%; border: 1px solid #ffffff0d; }
-.meridian { position: absolute; inset: 10% 5%; border: 1px solid #ffffff07; border-radius: 50%; transform: rotate(-32deg); }
-.inner {
-  position: absolute;
-  inset: 16%;
-  border-radius: 50%;
-  border: 1px solid #ffffff0e;
-  background: radial-gradient(circle at 38% 25%, #131313, #030303 73%);
-  box-shadow: 0 5px 18px #0008, inset 0 1px 8px #ffffff05;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 9%;
-  color: #e4e4df;
-}
-.inner svg { width: 25%; height: 25%; }
-.coreTitle { font: 500 clamp(11px, 2.4cqw, 18px) var(--mono); letter-spacing: .18em; background: transparent; }
-.coreSubtitle { font: 400 clamp(5px, 1cqw, 8px) var(--mono); letter-spacing: .08em; white-space: nowrap; color: #a4a4a1; background: transparent; }
-
-.nodes { list-style: none; margin: 0; padding: 0; }
-.node {
-  --satellite-size: clamp(44px, 8.4cqw, 56px);
-  position: absolute;
-  z-index: 4;
-  left: var(--x);
-  top: var(--y);
-  /* Center the icon itself on its connection; its label sits underneath. */
-  transform: translate(-50%, calc(var(--satellite-size) / -2));
-}
-.satellite { display: flex; flex-direction: column; align-items: center; gap: 10px; animation: float 11s ease-in-out infinite; animation-delay: var(--delay); }
-.icon {
-  width: var(--satellite-size);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border: 1px solid #ffffff35;
-  border-radius: 10px;
-  background: linear-gradient(140deg, #1a1a1aed, #070707f5 65%);
-  box-shadow: inset 0 1px 0 #ffffff0b, 0 4px 9px #0004;
-  color: #c9c9c5;
-  transition: border-color .5s, color .5s, transform .5s;
-}
-.icon svg { width: 50%; height: 50%; }
-.label { font: 400 clamp(8px, 1.55cqw, 10px) var(--mono); letter-spacing: .1em; color: #b2b2ae; white-space: nowrap; transition: color .5s; }
-.node:hover .icon { color: #f1f1ec; border-color: #ffffff70; transform: translateY(-1px) scale(1.025); }
-.node:hover .label { color: #f1f1ec; }
-.coordinate { position: absolute; right: 3%; bottom: 5%; font: 6px var(--mono); letter-spacing: 1.2px; color: #626260; }
-
-@keyframes breathe { 50% { opacity: .6; transform: scale(1.015); } }
-@keyframes float { 50% { translate: 0 -1.5px; } }
-@keyframes twinkle { 50% { opacity: .045; } }
-@keyframes orbitDrift { to { rotate: 360deg; } }
-@keyframes orbitTravel { to { stroke-dashoffset: -100; } }
-@keyframes signal { 0%, 73% { opacity: 0; stroke-dashoffset: 0; } 78%, 88% { opacity: .4; } 96%, 100% { opacity: 0; stroke-dashoffset: -100; } }
-
-@container (max-width: 450px) {
-  .stage { width: 108%; left: -4%; }
-  .node { --satellite-size: 34px; }
-  .satellite { gap: 7px; }
-  .icon { border-radius: 8px; }
-  .label { font-size: 8px; letter-spacing: .04em; }
-  .secondary, .coordinate, .signal { display: none; }
-  .sphere { width: 32%; }
-  .coreTitle { font-size: 10px; }
-  .coreSubtitle { font-size: 4.5px; letter-spacing: .02em; }
-  .stars { opacity: .45; }
-}
-@container (max-width: 300px) {
-  .stage { width: 114%; left: -7%; }
-  .node { --satellite-size: 31px; }
-  .label { font-size: 7px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .galaxy *, .galaxy *::before, .galaxy *::after { animation: none !important; transition: none !important; }
-  .signal, .ringParticles, .orbitParticle { display: none; }
-}
+.galaxy.galaxy { position:relative; width:100%; aspect-ratio:1; perspective:none; isolation:isolate; }
+.atmosphere { position:absolute; inset:12% -10%; background:radial-gradient(ellipse,#a9cfff0d,transparent 62%); animation:emerge .8s both,illuminate 9s 2s ease-in-out infinite; }
+.artwork { position:absolute; width:132%; aspect-ratio:1670/940; left:-16%; top:50%; transform:translateY(-50%); mix-blend-mode:screen; pointer-events:none; }
+.artwork img { display:block; width:100%; height:auto; }
+.plane { position:absolute; inset:0; }
+.plane picture { display:block; width:100%; height:100%; transform-origin:50% 48%; }
+/* Matched in the 1670 × 940 reference coordinate space. The planet's
+   original 640px diameter becomes 474px; the beam portals meet its poles. */
+.planet picture { transform:scale(.74); mask-image:radial-gradient(ellipse 23% 41% at 50% 48%,#000 81%,transparent 100%); }
+.stardust { mix-blend-mode:screen; opacity:.38; mask-image:radial-gradient(ellipse at 50% 48%,transparent 38%,#000 63%,transparent 78%); }
+.energy { mix-blend-mode:screen; opacity:.7; }
+.energy picture { transform:translateY(-1%) scale(.86); mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent); }
+.ring,.orbits { mix-blend-mode:screen; }
+.ring picture { transform:scale(.8); }
+.orbits picture { transform:scale(.93); opacity:.67; }
+/* Complementary diagonal half-planes meet on the ring's major axis.
+   Opaque planet pixels occlude the rear halves, preserving the dark core. */
+.rear picture { clip-path:polygon(0 0,100% 0,100% 16%,0 84%); }
+.front picture { clip-path:polygon(0 84%,100% 16%,100% 100%,0 100%); }
+.overlay { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; transform:translate(var(--px,0px),var(--py,0px)); transition:transform 1s ease-out; animation:emerge 1s .45s both; }
+.stars { fill:#cbe1fb; animation:twinkle 13s ease-in-out infinite; }
+.orbit { fill:none; stroke:#c5ddf4; stroke-width:.65; opacity:.09; }
+.particle { fill:none; stroke:#e2f1ff; stroke-width:2.7; stroke-linecap:round; stroke-dasharray:.08 99.92; animation:travel 55s linear infinite; opacity:.8; }
+.connection path { fill:none; stroke:#c4dfff50; stroke-width:1; }
+.connection .incoming { stroke:#eff8ff; stroke-width:3; stroke-linecap:round; stroke-dasharray:.5 100; animation:travel 2.6s ease-in-out both; }
+.coreLabel { position:absolute; left:50%; top:50%; transform:translate(-50%,-46%); display:flex; flex-direction:column; align-items:center; gap:10px; color:#e4eef8; pointer-events:none; animation:emerge 1s .5s both; }
+.coreLabel>span { font:12px var(--mono); letter-spacing:.22em; }
+.coreLabel small { font:5px var(--mono); letter-spacing:.16em; color:#aebfce; }
+.satellites { list-style:none; margin:0; padding:0; }
+.satellites li { position:absolute; left:var(--x); top:var(--y); transform:translate(-50%,-23px); z-index:2; animation:emerge .8s .8s both; }
+.satellite { display:flex; flex-direction:column; align-items:center; gap:9px; border:0; background:none; padding:0; min-width:48px; animation:float 11s ease-in-out infinite; animation-delay:var(--delay); }
+.icon { width:46px; height:46px; display:grid; place-items:center; border:1px solid #afc8de40; border-radius:11px; color:#cad9e9; background:linear-gradient(140deg,#101722d9,#030508e6); box-shadow:inset 0 1px 1px #d2eaff10; transition:border-color .4s,box-shadow .4s,transform .4s; }
+.label { font:8px var(--mono); letter-spacing:.12em; color:#a7b8c9; white-space:nowrap; }
+.satellite:hover .icon,.satellite[aria-expanded=true] .icon { border-color:#daeaff9e; box-shadow:0 0 18px #a2d2ff25,inset 0 1px 2px #ffffff18; transform:translateY(-2px); color:#f4f5f7; }
+.purpose { position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%); width:130px; padding:8px; background:#080c12ed; border-top:1px solid #bcd6ef40; color:#c8d5e2; font:9px/1.6 var(--mono); text-align:center; }
+.satellites li:nth-child(4) .purpose { left:auto; right:0; transform:none; }
+.satellites li:last-child .purpose { left:0; transform:none; }
+.annotation { position:absolute; right:5%; bottom:0; color:#6a7c8e; font:6px var(--mono); letter-spacing:1px; }
+@keyframes emerge { from { opacity:0; } to { opacity:1; } }
+@keyframes illuminate { 50% { opacity:.5; } }
+@keyframes travel { from { stroke-dashoffset:0; } to { stroke-dashoffset:-100; } }
+@keyframes twinkle { 50% { opacity:.4; } }
+@keyframes float { 50% { translate:0 -2px; } }
+@media(max-width:1000px) { .icon { width:38px; height:38px; } .icon svg { width:19px; } .label { font-size:7px; } .coreLabel { gap:7px; } .coreLabel>span { font-size:10px; } }
+@media(max-width:600px) { .galaxy.galaxy { aspect-ratio:1.03; } .artwork { width:140%; left:-20%; } .satellites li { transform:translate(-50%,-19px); } .satellite { min-width:40px; gap:6px; } .icon { width:36px; height:36px; border-radius:9px; } .label { font-size:7px; } .annotation { display:none; } .purpose { width:105px; font-size:8px; } .coreLabel svg { width:22px; } .coreLabel small { font-size:4px; } .orbit { display:none; } }
+@media(prefers-reduced-motion:reduce) { .galaxy *, .galaxy *::before { animation:none!important; transition:none!important; } .overlay { transform:none; } .particle,.incoming { display:none; } }

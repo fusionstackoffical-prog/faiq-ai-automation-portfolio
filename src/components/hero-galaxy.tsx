@@ -1,66 +1,66 @@
 "use client";
 
-import { useId, useState, type CSSProperties } from "react";
+import Image from "next/image";
+import { useRef, useState, type CSSProperties } from "react";
 import { AudioLines, CalendarDays, Database, Mail, MessageSquare, RefreshCw, Users, Workflow } from "lucide-react";
 import styles from "./hero-galaxy.module.css";
 
 const systems = [
-  { name: "VOICE AI", Icon: AudioLines, x: 24, y: 19, path: "M240 171 C240 285 295 327 390 356" },
-  { name: "EMAIL", Icon: Mail, x: 50, y: 11, path: "M500 99 C490 190 500 237 500 304" },
-  { name: "LEADS", Icon: Users, x: 77, y: 20, path: "M770 180 C785 287 717 342 616 368" },
-  { name: "MESSAGING", Icon: MessageSquare, x: 94, y: 46, path: "M940 414 C825 458 752 471 648 456" },
-  { name: "BOOKING", Icon: CalendarDays, x: 81, y: 77, path: "M810 693 C822 542 716 513 623 529" },
-  { name: "DATABASE", Icon: Database, x: 51, y: 85, path: "M510 765 C490 674 522 640 513 596" },
-  { name: "FOLLOW-UP", Icon: RefreshCw, x: 21, y: 78, path: "M210 702 C210 584 287 539 378 530" },
-  { name: "CRM", Icon: Workflow, x: 7, y: 47, path: "M70 423 C228 472 240 458 351 451" },
+  { name: "EMAIL", Icon: Mail, x: 50, y: 11, purpose: "Intelligent communication workflows." },
+  { name: "VOICE AI", Icon: AudioLines, x: 20, y: 26, purpose: "Intelligent customer conversations." },
+  { name: "LEADS", Icon: Users, x: 82, y: 25, purpose: "Capture enquiries. Qualify opportunities." },
+  { name: "MESSAGING", Icon: MessageSquare, x: 93, y: 49, purpose: "Connected conversations across channels." },
+  { name: "BOOKING", Icon: CalendarDays, x: 82, y: 75, purpose: "Automated appointment scheduling." },
+  { name: "DATABASE", Icon: Database, x: 52, y: 89, purpose: "Business knowledge, synchronized." },
+  { name: "FOLLOW-UP", Icon: RefreshCw, x: 22, y: 77, purpose: "Timely follow-ups that keep work moving." },
+  { name: "CRM", Icon: Workflow, x: 7, y: 51, purpose: "Connected customer information." },
 ];
-const orbits = [
-  { rx: 474, ry: 412, angle: -8, opacity: .55 },
-  { rx: 434, ry: 364, angle: -8, opacity: .85 },
-  { rx: 393, ry: 310, angle: -8, opacity: .65 },
-  { rx: 457, ry: 220, angle: -24, opacity: .7 },
-  { rx: 425, ry: 233, angle: 20, opacity: .5 },
-  { rx: 197, ry: 400, angle: 18, opacity: .45 },
-  { rx: 287, ry: 381, angle: -30, opacity: .45 },
-];
-// Split at the ellipse's major axis: the rear arc is occluded by the sphere.
-const ringBack = "M 190 450 A 310 83 0 0 1 810 450";
-const ringFront = "M 810 450 A 310 83 0 0 1 190 450";
+
+function LayerImage({ asset }: { asset: "planet" | "orbits" | "ring" | "energy" }) {
+  return <picture>
+    <source media="(max-width: 600px)" srcSet={`/images/ai-core-${asset}-mobile.webp`} type="image/webp"/>
+    <Image src={`/images/ai-core-${asset}.webp`} alt="" width={1670} height={940} unoptimized loading="eager" fetchPriority={asset === "planet" ? "high" : "auto"}/>
+  </picture>;
+}
 
 export function HeroGalaxy() {
-  const id = useId().replace(/:/g, "");
+  const root = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<number | null>(null);
-  return <div className={`network ${styles.galaxy}`} role="group" aria-label="AI Core and its eight connected business systems">
-    <div className={styles.stage}>
-    <svg className={styles.space} viewBox="0 0 1000 900" aria-hidden="true">
-      <defs>
-        <radialGradient id={`${id}-halo`}><stop stopColor="#fff" stopOpacity=".045"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></radialGradient>
-        <linearGradient id={`${id}-orbit`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#fff" stopOpacity=".035"/><stop offset=".4" stopColor="#ddd" stopOpacity=".2"/><stop offset=".7" stopColor="#fff" stopOpacity=".08"/><stop offset="1" stopColor="#fff" stopOpacity=".16"/></linearGradient>
-      </defs>
-      <ellipse cx="500" cy="450" rx="410" ry="370" fill={`url(#${id}-halo)`}/>
-      <g className={styles.stars}>{Array.from({ length: 32 }, (_, i) => <circle key={i} className={i % 9 === 0 ? styles.twinkle : undefined} cx={35 + ((i * 173) % 930)} cy={28 + ((i * 251) % 840)} r={i % 7 === 0 ? 1.1 : .6} opacity={.07 + (i % 4) * .035}/>)}</g>
-      <g className={styles.orbits}>{orbits.map(({ rx, ry, angle, opacity }, i) => <g key={i} className={i > 3 ? styles.secondary : undefined}>
-        <g className={i > 4 ? styles.orbitDrift : undefined}>
-          <ellipse cx="500" cy="450" rx={rx} ry={ry} transform={`rotate(${angle} 500 450)`} fill="none" stroke={`url(#${id}-orbit)`} strokeWidth=".85" opacity={opacity}/>
-          {i < 3 && <ellipse className={styles.orbitParticle} cx="500" cy="450" rx={rx} ry={ry} transform={`rotate(${angle} 500 450)`} pathLength="100" style={{ animationDuration: `${64 + i * 8}s`, animationDelay: `${i * -21}s` }}/>} 
-        </g>
-      </g>)}</g>
-      {systems.map((node, i) => <g key={node.name} className={styles.connection} data-active={active === i}>
-        <path d={node.path}/>
-        {i % 3 === 0 && <path className={styles.signal} pathLength="100" style={{ animationDelay: `${i * -4.7}s` }} d={node.path}/>}
+  return <div ref={root} className={`network ${styles.galaxy}`} role="group" aria-label="Explore the AI intelligence ecosystem"
+    onPointerMove={event => {
+      if (event.pointerType !== "mouse" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const rect = event.currentTarget.getBoundingClientRect();
+      root.current?.style.setProperty("--px", `${((event.clientX - rect.left) / rect.width - .5) * 7}px`);
+      root.current?.style.setProperty("--py", `${((event.clientY - rect.top) / rect.height - .5) * 7}px`);
+    }} onPointerLeave={() => { root.current?.style.setProperty("--px", "0px"); root.current?.style.setProperty("--py", "0px"); }}>
+    <div className={styles.atmosphere}/>
+    <div className={styles.artwork} role="img" aria-label="A cybernetic AI core encircled by luminous particle rings, orbital connections and vertical energy">
+      <div className={`${styles.plane} ${styles.stardust}`}><LayerImage asset="planet"/></div>
+      <div className={`${styles.plane} ${styles.energy}`}><LayerImage asset="energy"/></div>
+      <div className={`${styles.plane} ${styles.orbits} ${styles.rear}`}><LayerImage asset="orbits"/></div>
+      <div className={`${styles.plane} ${styles.ring} ${styles.rear}`}><LayerImage asset="ring"/></div>
+      <div className={`${styles.plane} ${styles.planet}`}><LayerImage asset="planet"/></div>
+      <div className={`${styles.plane} ${styles.ring} ${styles.front}`}><LayerImage asset="ring"/></div>
+      <div className={`${styles.plane} ${styles.orbits} ${styles.front}`}><LayerImage asset="orbits"/></div>
+    </div>
+    <svg className={styles.overlay} viewBox="0 0 1000 1000" aria-hidden="true">
+      <g className={styles.stars}>{Array.from({ length: 24 }, (_, i) => <circle key={i} cx={40 + (i * 173) % 920} cy={50 + (i * 241) % 900} r={i % 6 === 0 ? 1.6 : .7} opacity={.15 + i % 4 * .08}/>)}</g>
+      {[[-20, 419, 174], [14, 365, 284], [-38, 380, 257]].map(([angle, rx, ry], i) => <g key={angle} transform={`rotate(${angle} 500 500)`}>
+        <ellipse cx="500" cy="500" rx={rx} ry={ry} className={styles.orbit}/>
+        <ellipse cx="500" cy="500" rx={rx} ry={ry} pathLength="100" className={styles.particle} style={{ animationDelay: `${i * -19}s`, animationDuration: `${55 + i * 11}s` }}/>
       </g>)}
+      {active !== null && <g key={active} className={styles.connection}>
+        <path d={`M${systems[active].x * 10} ${systems[active].y * 10} Q${systems[active].x * 10} 500 500 500`}/>
+        <path className={styles.incoming} pathLength="100" d={`M${systems[active].x * 10} ${systems[active].y * 10} Q${systems[active].x * 10} 500 500 500`}/>
+      </g>}
     </svg>
-    <svg className={`${styles.ring} ${styles.rear}`} viewBox="0 0 1000 900" aria-hidden="true"><g transform="rotate(-22 500 450)"><path d={ringBack}/><path d={ringBack} transform="translate(500 450) scale(1.025 1.09) translate(-500 -450)"/></g></svg>
-    <div className={styles.sphere}>
-      <div className={styles.surface}/><div className={styles.meridian}/><div className={styles.inner}>
-        <Workflow strokeWidth={1.25} aria-hidden="true"/><span className={styles.coreTitle}>AI CORE</span><span className={styles.coreSubtitle}>INTELLIGENCE ENGINE</span>
-      </div>
-    </div>
-    <svg className={`${styles.ring} ${styles.front}`} viewBox="0 0 1000 900" aria-hidden="true"><g transform="rotate(-22 500 450)"><path d={ringFront}/><path d={ringFront} transform="translate(500 450) scale(1.025 1.09) translate(-500 -450)"/><path className={styles.ringParticles} pathLength="100" d={ringFront}/></g></svg>
-    <ul className={styles.nodes}>{systems.map(({ name, Icon, x, y }, i) => <li key={name} className={styles.node} style={{ "--x": `${x}%`, "--y": `${y}%`, "--delay": `${i * -1.3}s` } as CSSProperties} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}>
-      <div className={styles.satellite}><span className={styles.icon}><Icon strokeWidth={1.3} aria-hidden="true"/></span><span className={styles.label}>{name}</span></div>
+    <div className={styles.coreLabel}><Workflow size={27} strokeWidth={1.2}/><span>AI CORE</span><small>INTELLIGENCE ENGINE</small></div>
+    <ul className={styles.satellites}>{systems.map(({ name, Icon, x, y, purpose }, i) => <li key={name} style={{ "--x": `${x}%`, "--y": `${y}%`, "--delay": `${i * -.8}s` } as CSSProperties}>
+      <button type="button" className={styles.satellite} aria-label={`${name}: ${purpose}`} aria-expanded={active === i} aria-controls={`satellite-purpose-${i}`} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)} onFocus={() => setActive(i)} onBlur={() => setActive(null)} onClick={() => setActive(active === i ? null : i)} onKeyDown={e => { if (e.key === "Escape") setActive(null); }}>
+        <span className={styles.icon}><Icon size={22} strokeWidth={1.25}/></span><span className={styles.label}>{name}</span>
+      </button>
+      <span id={`satellite-purpose-${i}`} className={styles.purpose} hidden={active !== i}>{purpose}</span>
     </li>)}</ul>
-    <span className={styles.coordinate}>AUTONOMOUS OPERATIONS</span>
-    </div>
+    <span className={styles.annotation}>AUTONOMOUS OPERATIONS / 24:7</span>
   </div>;
 }

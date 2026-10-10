@@ -16,6 +16,6 @@ export function Navigation() {
     return () => observer.disconnect();
   }, []);
   return <header className="site-header"><a className="wordmark" href="#top" aria-label="Faiq, back to top">FAIQ<span>.</span></a><nav aria-label="Main navigation" className={open ? "nav-links is-open" : "nav-links"}>
-    {[['Work', 'work'], ['Systems', 'systems'], ['About', 'about'], ['Contact', 'contact']].map(([label, id]) => <a href={`#${id}`} className={active === id ? "active" : ""} key={id} onClick={() => setOpen(false)}>{label}</a>)}
+    {[['Systems', 'systems'], ['Work', 'work'], ['About', 'about'], ['Demo', 'demo'], ['Contact', 'contact']].map(([label, id]) => <a href={`#${id}`} className={active === id ? "active" : ""} key={id} onClick={() => setOpen(false)}>{label}</a>)}
   </nav><div className="nav-action"><a className="contact-shortcut" href={profile.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Contact Faiq on WhatsApp"><Phone size={16}/></a><ProjectButton className="button-nav">Let’s talk</ProjectButton></div><button className="menu-toggle" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button></header>;
 }

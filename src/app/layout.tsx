@@ -4,6 +4,7 @@ import "@fontsource-variable/cormorant-garamond";
 import "@fontsource-variable/cormorant-garamond/wght-italic.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "./globals.css";
+import "./beyond.css";
 
 const title = "Muhammad Faiq Khan | AI Automation & AI Agents";
 const description = "AI Automation & AI Agent specialist building intelligent business systems, voice agents, appointment automation, CRM workflows and AI-powered operations.";
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
   robots: { index: true, follow: true },
 };
-export const viewport: Viewport = { themeColor: "#050505" };
+export const viewport: Viewport = { themeColor: "#030508" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en"><body><a href="#main" className="skip-link">Skip to content</a>{children}</body></html>;
