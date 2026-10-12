@@ -1,46 +1,76 @@
-.galaxy.galaxy { position:relative; width:100%; aspect-ratio:1; perspective:none; isolation:isolate; }
-.atmosphere { position:absolute; inset:12% -10%; background:radial-gradient(ellipse,#a9cfff0d,transparent 62%); animation:emerge .8s both,illuminate 9s 2s ease-in-out infinite; }
-.artwork { position:absolute; width:132%; aspect-ratio:1670/940; left:-16%; top:50%; transform:translateY(-50%); mix-blend-mode:screen; pointer-events:none; }
+.galaxy.galaxy { position:relative; width:100%; aspect-ratio:1; perspective:none; isolation:isolate; mix-blend-mode:screen; }
+.atmosphere { position:absolute; inset:12% -10%; background:radial-gradient(ellipse,#a9cfff0d,transparent 62%); animation:illuminate 19s ease-in-out infinite; }
+.artwork { position:absolute; width:132%; aspect-ratio:1670/940; left:-16%; top:50%; transform:translateY(-50%); mix-blend-mode:screen; pointer-events:none; mask-image:radial-gradient(ellipse 70% 72% at 50% 48%,#000 62%,transparent 100%); }
 .artwork img { display:block; width:100%; height:auto; }
-.plane { position:absolute; inset:0; }
-.plane picture { display:block; width:100%; height:100%; transform-origin:50% 48%; }
-/* Matched in the 1670 × 940 reference coordinate space. The planet's
-   original 640px diameter becomes 474px; the beam portals meet its poles. */
-.planet picture { transform:scale(.74); mask-image:radial-gradient(ellipse 23% 41% at 50% 48%,#000 81%,transparent 100%); }
-.stardust { mix-blend-mode:screen; opacity:.38; mask-image:radial-gradient(ellipse at 50% 48%,transparent 38%,#000 63%,transparent 78%); }
-.energy { mix-blend-mode:screen; opacity:.7; }
-.energy picture { transform:translateY(-1%) scale(.86); mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent); }
+.plane { --depth:.5; position:absolute; inset:0; transform:translate(calc(var(--px,0px)*var(--depth)),calc(var(--py,0px)*var(--depth))); transition:transform 1.4s cubic-bezier(.16,1,.3,1); }
+.calibration,.slice,.plane picture { display:block; position:absolute; inset:0; transform-origin:50% 48%; }
+/* Static registration in the supplied 1670 × 940 coordinate space:
+   planet center ≈ (835,450), radius ≈ 235; ring major axis ≈ −20°.
+   The opaque planet occludes rear layers inside this group. Screening the
+   completed galaxy removes black source canvases against the website backdrop,
+   even when its scroll transform creates a separate stacking context. */
+.planet { --depth:.55; }
+.planet .calibration { transform:scale(.74); mask-image:radial-gradient(ellipse 23% 41% at 50% 48%,#000 81%,transparent 100%); animation:planet-drift 96s ease-in-out infinite,planet-breathe 21s ease-in-out infinite; }
+.energy { --depth:.35; mix-blend-mode:screen; }
+.energy .calibration { transform:translateY(-2%) scale(.8); mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent); }
+.energy picture { opacity:.7; animation:energy-breathe 13s ease-in-out infinite; }
+.beamFlow { position:absolute; left:49.7%; top:0; width:.6%; height:20%; border-radius:50%; background:linear-gradient(transparent,#d4edff8f,transparent); box-shadow:0 0 9px #89c6ff45; opacity:0; animation:beam-flow 17s 3s ease-in-out infinite; }
 .ring,.orbits { mix-blend-mode:screen; }
-.ring picture { transform:scale(.8); }
-.orbits picture { transform:scale(.93); opacity:.67; }
-/* Complementary diagonal half-planes meet on the ring's major axis.
-   Opaque planet pixels occlude the rear halves, preserving the dark core. */
-.rear picture { clip-path:polygon(0 0,100% 0,100% 16%,0 84%); }
-.front picture { clip-path:polygon(0 84%,100% 16%,100% 100%,0 100%); }
-.overlay { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; transform:translate(var(--px,0px),var(--py,0px)); transition:transform 1s ease-out; animation:emerge 1s .45s both; }
-.stars { fill:#cbe1fb; animation:twinkle 13s ease-in-out infinite; }
-.orbit { fill:none; stroke:#c5ddf4; stroke-width:.65; opacity:.09; }
-.particle { fill:none; stroke:#e2f1ff; stroke-width:2.7; stroke-linecap:round; stroke-dasharray:.08 99.92; animation:travel 55s linear infinite; opacity:.8; }
-.connection path { fill:none; stroke:#c4dfff50; stroke-width:1; }
-.connection .incoming { stroke:#eff8ff; stroke-width:3; stroke-linecap:round; stroke-dasharray:.5 100; animation:travel 2.6s ease-in-out both; }
-.coreLabel { position:absolute; left:50%; top:50%; transform:translate(-50%,-46%); display:flex; flex-direction:column; align-items:center; gap:10px; color:#e4eef8; pointer-events:none; animation:emerge 1s .5s both; }
-.coreLabel>span { font:12px var(--mono); letter-spacing:.22em; }
-.coreLabel small { font:5px var(--mono); letter-spacing:.16em; color:#aebfce; }
-.satellites { list-style:none; margin:0; padding:0; }
-.satellites li { position:absolute; left:var(--x); top:var(--y); transform:translate(-50%,-23px); z-index:2; animation:emerge .8s .8s both; }
-.satellite { display:flex; flex-direction:column; align-items:center; gap:9px; border:0; background:none; padding:0; min-width:48px; animation:float 11s ease-in-out infinite; animation-delay:var(--delay); }
-.icon { width:46px; height:46px; display:grid; place-items:center; border:1px solid #afc8de40; border-radius:11px; color:#cad9e9; background:linear-gradient(140deg,#101722d9,#030508e6); box-shadow:inset 0 1px 1px #d2eaff10; transition:border-color .4s,box-shadow .4s,transform .4s; }
-.label { font:8px var(--mono); letter-spacing:.12em; color:#a7b8c9; white-space:nowrap; }
-.satellite:hover .icon,.satellite[aria-expanded=true] .icon { border-color:#daeaff9e; box-shadow:0 0 18px #a2d2ff25,inset 0 1px 2px #ffffff18; transform:translateY(-2px); color:#f4f5f7; }
-.purpose { position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%); width:130px; padding:8px; background:#080c12ed; border-top:1px solid #bcd6ef40; color:#c8d5e2; font:9px/1.6 var(--mono); text-align:center; }
+.ring { --depth:.85; }
+.ring .calibration { transform:scale(.8); animation:ring-drift 54s ease-in-out infinite; }
+.orbits { --depth:1.1; }
+.orbits .calibration { transform:scale(.89); animation:network-drift 113s ease-in-out infinite; }
+.orbits picture { opacity:.67; }
+/* Complementary cuts move with their calibrated artwork. Ring and network
+   have different major axes; sharing a cut flattens the orbital perspective. */
+.ring.rear .slice { clip-path:polygon(0 0,100% 0,100% 16%,0 84%); }
+.ring.front .slice { clip-path:polygon(0 84%,100% 16%,100% 100%,0 100%); }
+.orbits.rear .slice { clip-path:polygon(0 0,100% 0,100% 32%,0 68%); }
+.orbits.front .slice { clip-path:polygon(0 68%,100% 32%,100% 100%,0 100%); }
+.signals { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+.particle,.ringSignal { fill:none; stroke:#e1f2ff; stroke-width:3.5; stroke-linecap:round; stroke-dasharray:.025 99.975; animation:travel 37s linear infinite; opacity:.9; }
+.particle:nth-child(even) { stroke:#92ccff; stroke-width:4.5; }
+.ringSignal { stroke-width:2.5; stroke-dasharray:.3 99.7; opacity:.65; animation:travel 24s -7s linear infinite; }
+.highlights { --depth:.55; mix-blend-mode:screen; }
+.highlights i { position:absolute; left:47%; top:21%; width:6%; height:6%; border-radius:50%; background:radial-gradient(ellipse,#d8f1ff5c,transparent 68%); opacity:.35; animation:rim-light 11s ease-in-out infinite; }
+.highlights i+ i { top:69%; animation-duration:17s; animation-delay:-6s; }
+.coreResponse { position:absolute; left:36%; top:22%; width:28%; height:49%; border-radius:50%; border:1px solid #d4eaff99; box-shadow:0 0 16px #b4dcff66,inset 0 0 16px #b4dcff33; opacity:0; animation:core-response 1.8s 1.4s ease-out both; }
+.overlay { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; transform:translate(calc(var(--px,0px)*.7),calc(var(--py,0px)*.7)); transition:transform 1.4s ease-out; }
+.stars { fill:#cbe1fb; animation:twinkle 23s ease-in-out infinite; }
+.connection { fill:none; stroke:#c4dfff65; stroke-width:1; }
+.incoming { fill:none; stroke:#eff8ff; stroke-width:3; stroke-linecap:round; stroke-dasharray:.4 100; opacity:0; animation:incoming 1.8s ease-in-out both; }
+.coreLabel { position:absolute; left:50%; top:49%; transform:translate(-50%,-46%); translate:calc(var(--px,0px)*.55) calc(var(--py,0px)*.55); transition:translate 1.4s ease-out; display:flex; flex-direction:column; align-items:center; gap:10px; color:#e4eef8; pointer-events:none; }
+.coreLabel>span { font:12px var(--mono); letter-spacing:.2em; }
+.coreLabel small { font:8px var(--mono); letter-spacing:.06em; color:#aebfce; }
+.satellites { position:absolute; inset:0; list-style:none; margin:0; padding:0; transform:translate(calc(var(--px,0px)*.7),calc(var(--py,0px)*.7)); transition:transform 1.4s ease-out; }
+.satellites li { position:absolute; left:var(--x); top:var(--y); transform:translate(-50%,-23px); z-index:2; }
+.satellites li:has([aria-expanded=true]) { z-index:3; }
+.satellite { display:flex; flex-direction:column; align-items:center; gap:9px; border:0; background:none; padding:0; min-width:48px; animation:float var(--duration) var(--delay) ease-in-out infinite; }
+.icon { width:46px; height:46px; display:grid; place-items:center; border:1px solid #afc8de40; border-radius:11px; color:#cad9e9; background:linear-gradient(140deg,#101722d9,#030508e6); box-shadow:inset 0 1px 1px #d2eaff10; transition:border-color .4s,box-shadow .4s,color .4s; }
+.label { font:11px var(--mono); letter-spacing:.07em; color:#a7b8c9; white-space:nowrap; transition:color .4s; }
+.satellite:hover .icon,.satellite[aria-expanded=true] .icon { border-color:#daeaff9e; box-shadow:0 0 18px #a2d2ff25,inset 0 1px 2px #ffffff18; color:#f4f5f7; }
+.satellite:hover .label,.satellite[aria-expanded=true] .label { color:#f0f7ff; }
+.purpose { position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%); width:175px; padding:10px 12px; background:#080c12f5; border:1px solid #bcd6ef40; color:#d1deea; font:13px/1.55 var(--sans); text-align:center; }
+.purpose[hidden] { display:none; }
 .satellites li:nth-child(4) .purpose { left:auto; right:0; transform:none; }
 .satellites li:last-child .purpose { left:0; transform:none; }
-.annotation { position:absolute; right:5%; bottom:0; color:#6a7c8e; font:6px var(--mono); letter-spacing:1px; }
-@keyframes emerge { from { opacity:0; } to { opacity:1; } }
-@keyframes illuminate { 50% { opacity:.5; } }
+.annotation { position:absolute; right:5%; bottom:-2%; color:#879bad; font:10px var(--mono); letter-spacing:.8px; }
+/* JS only coalesces pointer events. CSS motion pauses offscreen/when hidden. */
+.galaxy[data-running=false] *, .galaxy[data-running=false] *::before { animation-play-state:paused!important; }
+@keyframes planet-drift { 0%,100% { rotate:0deg; } 25% { rotate:.8deg; } 75% { rotate:-.8deg; } }
+@keyframes planet-breathe { 0%,100% { scale:1; } 50% { scale:1.007; } }
+@keyframes ring-drift { 0%,100% { rotate:0deg; } 35% { rotate:1deg; } 75% { rotate:-.6deg; } }
+@keyframes network-drift { 0%,100% { rotate:0deg; } 30% { rotate:-1.25deg; } 75% { rotate:.75deg; } }
+@keyframes illuminate { 50% { opacity:.55; } }
+@keyframes energy-breathe { 50% { opacity:.88; translate:0 -1px; } }
+@keyframes beam-flow { 0%,65%,100% { transform:translateY(0); opacity:0; } 70% { opacity:.7; } 91% { opacity:.7; } 96% { transform:translateY(410%); opacity:0; } }
+@keyframes rim-light { 50% { opacity:.85; scale:1.08; } }
 @keyframes travel { from { stroke-dashoffset:0; } to { stroke-dashoffset:-100; } }
-@keyframes twinkle { 50% { opacity:.4; } }
-@keyframes float { 50% { translate:0 -2px; } }
-@media(max-width:1000px) { .icon { width:38px; height:38px; } .icon svg { width:19px; } .label { font-size:7px; } .coreLabel { gap:7px; } .coreLabel>span { font-size:10px; } }
-@media(max-width:600px) { .galaxy.galaxy { aspect-ratio:1.03; } .artwork { width:140%; left:-20%; } .satellites li { transform:translate(-50%,-19px); } .satellite { min-width:40px; gap:6px; } .icon { width:36px; height:36px; border-radius:9px; } .label { font-size:7px; } .annotation { display:none; } .purpose { width:105px; font-size:8px; } .coreLabel svg { width:22px; } .coreLabel small { font-size:4px; } .orbit { display:none; } }
-@media(prefers-reduced-motion:reduce) { .galaxy *, .galaxy *::before { animation:none!important; transition:none!important; } .overlay { transform:none; } .particle,.incoming { display:none; } }
+@keyframes incoming { 0% { stroke-dashoffset:0; opacity:0; } 12%,85% { opacity:.9; } 100% { stroke-dashoffset:-100; opacity:0; } }
+@keyframes core-response { 0%,100% { opacity:0; } 22% { opacity:.45; } 100% { transform:scale(1.015); } }
+@keyframes twinkle { 50% { opacity:.45; } }
+@keyframes float { 50% { translate:1px -2px; } }
+@media(max-width:1000px) { .satellites li { transform:translate(-50%,-19px); } .icon { width:38px; height:38px; } .icon svg { width:19px; } .label { font-size:10px; letter-spacing:0; } .coreLabel { gap:7px; } .coreLabel>span { font-size:11px; } .coreLabel small { display:none; } .annotation { display:none; } }
+@media(max-width:800px), (pointer:coarse) { .plane,.overlay,.satellites { transform:none; } .coreLabel { translate:none; } .secondary { display:none; } }
+@media(max-width:600px) { .galaxy.galaxy { aspect-ratio:1.03; } .artwork { width:140%; left:-20%; } .satellites li { transform:translate(-50%,-19px); } .satellite { min-width:44px; min-height:54px; gap:7px; } .icon { width:36px; height:36px; border-radius:9px; } .label { font-size:10px; } .annotation { display:none; } .purpose { width:145px; font-size:12px; } .coreLabel svg { width:22px; } .ringSignal { display:none; } }
+@media(prefers-reduced-motion:reduce) { .galaxy *, .galaxy *::before { animation:none!important; transition:none!important; } .plane,.overlay,.satellites { transform:none; } .coreLabel { translate:none; } .particle,.ringSignal,.incoming,.beamFlow,.coreResponse { display:none; } }

@@ -10,7 +10,7 @@ export function Motion() {
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach(el => {
         gsap.from(el, { y: 24, opacity: .35, duration: 1, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 95%", once: true } });
       });
-      gsap.to(".hero-visual .network", { y: 24, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1 } });
+      gsap.to(".hero-visual .network", { y: 18, scale: .992, opacity: .88, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1 } });
     });
     document.fonts.ready.then(() => ScrollTrigger.refresh());
     return () => media.revert();
